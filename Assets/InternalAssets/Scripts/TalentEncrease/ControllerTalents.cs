@@ -18,11 +18,26 @@ public class ControllerTalents : MonoBehaviour
        _view.UpdateText(_model.GetTalentPoints());
     }
 
-    private void RemoveTalentPoint()
+    public void RemoveAllPoints()
+    {
+        _model.RemoveAllTalentPoints();
+        _view.UpdateText(_model.GetTalentPoints());
+    }
+
+    public void RemoveTalentPoint()
     {
         if ((!_model.RemoveTalentEnable())) return;
-        
         _model.RemoveTalentPoint();
         _view.UpdateText(_model.GetTalentPoints());
+    }
+
+    public void HideUI()
+    {
+        _view.HideUI();
+    }
+
+    public void ShowUI()
+    {
+        _view.ShowUi();
     }
 }

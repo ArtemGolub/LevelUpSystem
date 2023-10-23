@@ -1,17 +1,24 @@
 public class ModelTalents
 {
-    private int talentPoints = 0;
+    private int currentTalentPoints = 0;
+    private int maxTallentPoints = 0;
 
     public int GetTalentPoints()
     {
-        return talentPoints;
+        return currentTalentPoints;
     }
     
     public void RemoveTalentPoint()
     {
         if (!RemoveTalentEnable()) return;
-        talentPoints--;
+        currentTalentPoints--;
     }
+
+    public void RemoveAllTalentPoints()
+    {
+        currentTalentPoints = maxTallentPoints;
+    }
+    
     public bool RemoveTalentEnable()
     {
         if (GetTalentPoints() <= 0) return false;
@@ -19,6 +26,7 @@ public class ModelTalents
     }
     public void AddTalentPoint()
     {
-        talentPoints++;
+        currentTalentPoints++;
+        maxTallentPoints++;
     }
 }
