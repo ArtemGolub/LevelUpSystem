@@ -1,34 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TalentView : MonoBehaviour, ITalentView
 {
-    public Button talent1;
-    public Button talent2;
-
     private TalentController _controller;
-    
+
     public void Init(TalentController controller)
     {
         _controller = controller;
-        
-        
     }
 
-    public void Enable()
+    public void RegisterTalents(TalentsPair[] talentsPairs)
     {
-        throw new System.NotImplementedException();
+        foreach (var pair in talentsPairs)
+        {
+            if (pair.button == null) return;
+            pair.button.onClick.AddListener(() => _controller.HandleButtonPress(pair.talent));
+        }
     }
-
-    public void Disable()
+    
+    public void ShowTalentName(string talentName)
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Chosen()
-    {
-        throw new System.NotImplementedException();
+        Debug.Log(talentName);
     }
 }
