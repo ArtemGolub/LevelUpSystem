@@ -8,12 +8,12 @@ public class TalentsDataEditor : Editor
     public override void OnInspectorGUI()
     {
         TalentsData talentsData = (TalentsData)target;
-
-        // Проверяем и инициализируем массив, если это необходимо
+        
+        DrawDefaultInspector();
+        
         if (talentsData.buttonTalentPairs == null)
             talentsData.buttonTalentPairs = new TalentsPair[0];
-
-        // Задаем количество пар в массиве
+        
         int newSize = EditorGUILayout.IntField("Number of Pairs", talentsData.buttonTalentPairs.Length);
         if (newSize != talentsData.buttonTalentPairs.Length)
         {
@@ -27,14 +27,12 @@ public class TalentsDataEditor : Editor
 
             EditorGUILayout.BeginHorizontal();
             
-            // Отображаем поля для Button и TalentData
             talentsData.buttonTalentPairs[i].button = (Button)EditorGUILayout.ObjectField(talentsData.buttonTalentPairs[i].button, typeof(Button), true);
             talentsData.buttonTalentPairs[i].talent = (TalentData)EditorGUILayout.ObjectField(talentsData.buttonTalentPairs[i].talent, typeof(TalentData), true);
             
             EditorGUILayout.EndHorizontal();
         }
-
-        // Если вы вносите изменения, сохраните их
+        
         if (GUI.changed)
         {
             EditorUtility.SetDirty(talentsData);

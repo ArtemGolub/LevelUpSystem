@@ -18,3 +18,4 @@ MonoBehaviour:
   initialState: 0
   requiredLevel: 1
   cost: 1
+  prerequisites: []

@@ -14,7 +14,7 @@ public class TalentView : MonoBehaviour, ITalentView
         foreach (var pair in talentsPairs)
         {
             if (pair.button == null) return;
-            pair.button.onClick.AddListener(() => _controller.HandleButtonPress(pair.talent));
+            pair.button.onClick.AddListener(() => _controller.HandleButtonPress(pair.talent, pair.button));
         }
     }
     
