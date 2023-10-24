@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO Refactor this
 public class TalentController : MonoBehaviour
 {
     public static TalentController current;
@@ -101,6 +100,7 @@ public class TalentController : MonoBehaviour
                     break;
                 }
             }
+           
         }
         else
         {
