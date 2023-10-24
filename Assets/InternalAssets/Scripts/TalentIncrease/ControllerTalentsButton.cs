@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class ControllerTalentsButton : MonoBehaviour
 {
+    public static ControllerTalentsButton current;
+    
     private ModelButtonTalents _modelButton;
     private ITalentButtonsView _buttonsView;
 
     private void Start()
     {
+        current = this;
+        
         _modelButton = new ModelButtonTalents();
         _buttonsView = GetComponent<ITalentButtonsView>();
         _buttonsView.Init(this);

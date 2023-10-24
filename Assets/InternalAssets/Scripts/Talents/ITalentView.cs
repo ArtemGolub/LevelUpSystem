@@ -5,5 +5,7 @@ public interface ITalentView
     
     public void Init(TalentController controller);
     public void RegisterTalents(TalentsPair[] talentsPairs);
-    public void ShowTalentName(string talentName);
+    public void ShowConfirm(bool isActive);
+    public void ShowCancel(bool isActive);
+    public void HideButtons();
 }

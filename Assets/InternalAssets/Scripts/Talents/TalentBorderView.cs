@@ -14,6 +14,6 @@ public class TalentBorderView : MonoBehaviour, ITalentBorderView
 
     public void ChangeBorder(Button button, TalentState state)
     {
-        button.image.sprite =  TalentsData.current.BorderData.GetSpriteForState(state);
+        button.image.sprite = TalentsData.current.BorderData.GetSpriteForState(state);
     }
 }

@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // TODO Refactor this
-// create regions for Unity methods and inits
 public class TalentController : MonoBehaviour
 {
     private TalentModel _talentModel;
     private ITalentView _talentView;
     private TalentBorderView _talentBorderView;
+    
+    private TalentData _currentlySelectedTalent;
+    private Button _currentlySelectedTalentButton;
 
     private void Start()
     {
@@ -16,10 +18,9 @@ public class TalentController : MonoBehaviour
             Debug.LogWarning("No Talents Data");
             return;
         }
-           
-        InitTalentModel();
-        InitTalentView();
         InitTalentBorderView();
+        InitTalentView();
+        InitTalentModel();
     }
 
     
@@ -28,6 +29,8 @@ public class TalentController : MonoBehaviour
         _talentView = GetComponent<ITalentView>();
         _talentView.Init(this);
         _talentView.RegisterTalents(TalentsData.current.buttonTalentPairs);
+        
+        _talentView.HideButtons();
     }
 
     private void InitTalentBorderView()
@@ -44,16 +47,25 @@ public class TalentController : MonoBehaviour
             if (!_talentModel.talentsStates.ContainsKey(pair.talent.talentName))
             {
                 _talentModel.talentsStates[pair.talent.talentName] = pair.talent.initialState;
+                _talentBorderView.ChangeBorder(pair.button, pair.talent.initialState);
             }
         }
     }
-    // TODO new MVC for buttons Upgrade | Remove Upgrade
+    
     public void HandleButtonPress(TalentData talent, Button talentButton)
     {
         if (talent == null) return;
+        
+        if(talent.talentName == "Main") return;
+        if (IsTalentUpgradedSelected() && _currentlySelectedTalent != talent)
+        {
+            Debug.LogWarning("An upgraded talent is already selected. Please interact with it first.");
+            return;
+        }
+
         if (IsAnyTalentSelected())
         {
-            Debug.LogWarning("Another talent is already selected. Unselect first.");
+            Debug.LogWarning("Selected talent");
             return;
         }
         
@@ -66,6 +78,13 @@ public class TalentController : MonoBehaviour
                     if (!CanUpgradeTalent(talent)) return;
                     _talentModel.talentsStates[talent.talentName] = TalentState.Selected;
                     _talentBorderView.ChangeBorder(talentButton, _talentModel.talentsStates[talent.talentName]);
+                    
+                    _currentlySelectedTalent = talent;
+                    _currentlySelectedTalentButton = talentButton;
+                    
+                    _talentView.ShowConfirm(true);
+
+                    Debug.Log("Active");
                     break;
                 }
                 case TalentState.Inactive:
@@ -75,14 +94,19 @@ public class TalentController : MonoBehaviour
                 }
                 case TalentState.Selected:
                 {
-                    _talentModel.talentsStates[talent.talentName] = TalentState.Upgraded;
+                    _talentModel.talentsStates[talent.talentName] = TalentState.Active;
                     _talentBorderView.ChangeBorder(talentButton, _talentModel.talentsStates[talent.talentName]);
-                    ActivateDependentTalents(talent.name);
+                    _talentView.HideButtons();
+                    Debug.Log("Selected");
                     break;
                 }
                 case TalentState.Upgraded:
                 {
-                    Debug.Log(talent.name+ " Already upgraded");
+                    Debug.Log(talent.name+ " Select upgraded");
+                    _currentlySelectedTalent = talent;
+                    _currentlySelectedTalentButton = talentButton;
+                    
+                    _talentView.ShowCancel(true);
                     break;
                 }
             }
@@ -93,8 +117,77 @@ public class TalentController : MonoBehaviour
         }
 
     }
+    private bool IsTalentUpgradedSelected()
+    {
+        return _currentlySelectedTalent != null && _talentModel.talentsStates[_currentlySelectedTalent.talentName] == TalentState.Upgraded;
+    }
+    public void HandleUpgradeButtonPress()
+    {
+        if (_currentlySelectedTalent != null)
+        {
+            _talentModel.UpgradeTalent(_currentlySelectedTalent.talentName);
+            _talentBorderView.ChangeBorder(_currentlySelectedTalentButton, _talentModel.talentsStates[_currentlySelectedTalent.talentName]);
+            ActivateDependentTalents(_currentlySelectedTalent.talentName);
+            
+            _currentlySelectedTalent = null;
+            _currentlySelectedTalentButton = null;
+            
+            _talentView.HideButtons();
+        }
+        else
+        {
+            Debug.LogWarning("No talent is currently selected.");
+        }
+    }
+    
+    public void HandleCancelButtonPress()
+    {
+        if (_currentlySelectedTalent != null)
+        {
+            if (_talentModel.talentsStates[_currentlySelectedTalent.talentName] == TalentState.Upgraded)
+            {
+                if (!HasUpgradedDependents(_currentlySelectedTalent))
+                {
+                    _talentModel.talentsStates[_currentlySelectedTalent.talentName] = TalentState.Active;
+                    _talentBorderView.ChangeBorder(_currentlySelectedTalentButton, TalentState.Active);
+                }
+                else
+                {
+                    Debug.LogWarning("Cannot downgrade the talent as there are dependent talents upgraded.");
+                }
+            }
+        
+            _currentlySelectedTalent = null;
+            _currentlySelectedTalentButton = null;
+            
+            _talentView.HideButtons();
+        }
+        else
+        {
+            Debug.LogWarning("No talent is currently selected.");
+        }
+    }
+    
+    private bool HasUpgradedDependents(TalentData talent)
+    {
+        foreach (var pair in TalentsData.current.buttonTalentPairs)
+        {
+            var dependentTalent = pair.talent;
+            if (dependentTalent.prerequisites != null && dependentTalent.prerequisites.Length > 0)
+            {
+                foreach (var prerequisite in dependentTalent.prerequisites)
+                {
+                    if (prerequisite == talent && _talentModel.talentsStates[dependentTalent.talentName] == TalentState.Upgraded)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
 
-// TODO think where can replace
+        return false;
+    }
+    
     private bool CanUpgradeTalent(TalentData talent)
     {
         if (talent.prerequisites != null && talent.prerequisites.Length > 0)
@@ -111,7 +204,6 @@ public class TalentController : MonoBehaviour
         return true;
     }
     
-    // TODO think how to change
     private void ActivateDependentTalents(string upgradedTalentName)
     {
         foreach (var pair in TalentsData.current.buttonTalentPairs)
@@ -150,8 +242,7 @@ public class TalentController : MonoBehaviour
             }
         }
     }
- 
-    // TODO think where can replace
+    
     private bool IsAnyTalentSelected()
     {
         foreach (var state in _talentModel.talentsStates.Values)
