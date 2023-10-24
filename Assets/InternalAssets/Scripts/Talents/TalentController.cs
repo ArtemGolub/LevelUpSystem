@@ -18,38 +18,15 @@ public class TalentController : MonoBehaviour
             Debug.LogWarning("No Talents Data");
             return;
         }
+        
+        InitMVC();
+    }
+
+    private void InitMVC()
+    {
         InitTalentBorderView();
         InitTalentView();
         InitTalentModel();
-    }
-
-    
-    private void InitTalentView()
-    {
-        _talentView = GetComponent<ITalentView>();
-        _talentView.Init(this);
-        _talentView.RegisterTalents(TalentsData.current.buttonTalentPairs);
-        
-        _talentView.HideButtons();
-    }
-
-    private void InitTalentBorderView()
-    {
-        _talentBorderView = GetComponent<TalentBorderView>();
-        _talentBorderView.Init(this);
-    }
-
-    private void InitTalentModel()
-    {
-        _talentModel = new TalentModel();
-        foreach (var pair in TalentsData.current.buttonTalentPairs)
-        {
-            if (!_talentModel.talentsStates.ContainsKey(pair.talent.talentName))
-            {
-                _talentModel.talentsStates[pair.talent.talentName] = pair.talent.initialState;
-                _talentBorderView.ChangeBorder(pair.button, pair.talent.initialState);
-            }
-        }
     }
     
     public void HandleButtonPress(TalentData talent, Button talentButton)
@@ -57,15 +34,15 @@ public class TalentController : MonoBehaviour
         if (talent == null) return;
         
         if(talent.talentName == "Main") return;
-        if (IsTalentUpgradedSelected() && _currentlySelectedTalent != talent)
+        if (_talentModel.IsTalentUpgradedSelected(_currentlySelectedTalent) && _currentlySelectedTalent != talent)
         {
             Debug.LogWarning("An upgraded talent is already selected. Please interact with it first.");
             return;
         }
 
-        if (IsAnyTalentSelected())
+        if (_talentModel.IsAnyTalentSelected())
         {
-            Debug.LogWarning("Selected talent");
+            Debug.LogWarning("Other talent selected");
             return;
         }
         
@@ -75,7 +52,7 @@ public class TalentController : MonoBehaviour
             {
                 case TalentState.Active:
                 {
-                    if (!CanUpgradeTalent(talent)) return;
+                    if (!TalentHelper.CanUpgradeTalent(talent, _talentModel)) return;
                     _talentModel.talentsStates[talent.talentName] = TalentState.Selected;
                     _talentBorderView.ChangeBorder(talentButton, _talentModel.talentsStates[talent.talentName]);
                     
@@ -84,7 +61,7 @@ public class TalentController : MonoBehaviour
                     
                     _talentView.ShowConfirm(true);
 
-                    Debug.Log("Active");
+                    Debug.Log("Active: " + talent.name);
                     break;
                 }
                 case TalentState.Inactive:
@@ -117,17 +94,14 @@ public class TalentController : MonoBehaviour
         }
 
     }
-    private bool IsTalentUpgradedSelected()
-    {
-        return _currentlySelectedTalent != null && _talentModel.talentsStates[_currentlySelectedTalent.talentName] == TalentState.Upgraded;
-    }
+
     public void HandleUpgradeButtonPress()
     {
         if (_currentlySelectedTalent != null)
         {
             _talentModel.UpgradeTalent(_currentlySelectedTalent.talentName);
             _talentBorderView.ChangeBorder(_currentlySelectedTalentButton, _talentModel.talentsStates[_currentlySelectedTalent.talentName]);
-            ActivateDependentTalents(_currentlySelectedTalent.talentName);
+            TalentHelper.ActivateDependentTalents(_currentlySelectedTalent.talentName, _talentModel, _talentBorderView);
             
             _currentlySelectedTalent = null;
             _currentlySelectedTalentButton = null;
@@ -146,7 +120,7 @@ public class TalentController : MonoBehaviour
         {
             if (_talentModel.talentsStates[_currentlySelectedTalent.talentName] == TalentState.Upgraded)
             {
-                if (!HasUpgradedDependents(_currentlySelectedTalent))
+                if (!TalentHelper.HasUpgradedDependents(_currentlySelectedTalent, _talentModel))
                 {
                     _talentModel.talentsStates[_currentlySelectedTalent.talentName] = TalentState.Active;
                     _talentBorderView.ChangeBorder(_currentlySelectedTalentButton, TalentState.Active);
@@ -168,92 +142,31 @@ public class TalentController : MonoBehaviour
         }
     }
     
-    private bool HasUpgradedDependents(TalentData talent)
+    private void InitTalentView()
     {
+        _talentView = GetComponent<ITalentView>();
+        _talentView.Init(this);
+        _talentView.RegisterTalents(TalentsData.current.buttonTalentPairs);
+        
+        _talentView.HideButtons();
+    }
+
+    private void InitTalentBorderView()
+    {
+        _talentBorderView = GetComponent<TalentBorderView>();
+        _talentBorderView.Init(this);
+    }
+
+    private void InitTalentModel()
+    {
+        _talentModel = new TalentModel();
         foreach (var pair in TalentsData.current.buttonTalentPairs)
         {
-            var dependentTalent = pair.talent;
-            if (dependentTalent.prerequisites != null && dependentTalent.prerequisites.Length > 0)
+            if (!_talentModel.talentsStates.ContainsKey(pair.talent.talentName))
             {
-                foreach (var prerequisite in dependentTalent.prerequisites)
-                {
-                    if (prerequisite == talent && _talentModel.talentsStates[dependentTalent.talentName] == TalentState.Upgraded)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-    
-    private bool CanUpgradeTalent(TalentData talent)
-    {
-        if (talent.prerequisites != null && talent.prerequisites.Length > 0)
-        {
-            foreach (var prereq in talent.prerequisites)
-            {
-                if (!_talentModel.talentsStates.ContainsKey(prereq.talentName) ||
-                    _talentModel.talentsStates[prereq.talentName] != TalentState.Upgraded)
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-    
-    private void ActivateDependentTalents(string upgradedTalentName)
-    {
-        foreach (var pair in TalentsData.current.buttonTalentPairs)
-        {
-            var talent = pair.talent;
-            
-            if (talent.prerequisites != null && talent.prerequisites.Length > 0)
-            {
-                bool allPrerequisitesMet = true;
-                
-                foreach (var prerequisite in talent.prerequisites)
-                {
-                    if (_talentModel.talentsStates.TryGetValue(prerequisite.talentName, out TalentState state))
-                    {
-                        if (state != TalentState.Upgraded)
-                        {
-                            allPrerequisitesMet = false;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        allPrerequisitesMet = false;
-                        break; 
-                    }
-                }
-
-                if (allPrerequisitesMet)  
-                {
-                    if (_talentModel.talentsStates[talent.talentName] == TalentState.Inactive)
-                    {
-                        _talentModel.talentsStates[talent.talentName] = TalentState.Active;
-                        _talentBorderView.ChangeBorder(pair.button, TalentState.Active);
-                    }
-                }
+                _talentModel.talentsStates[pair.talent.talentName] = pair.talent.initialState;
+                _talentBorderView.ChangeBorder(pair.button, pair.talent.initialState);
             }
         }
     }
-    
-    private bool IsAnyTalentSelected()
-    {
-        foreach (var state in _talentModel.talentsStates.Values)
-        {
-            if (state == TalentState.Selected)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
-
