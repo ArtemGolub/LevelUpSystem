@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TalentBorderView : MonoBehaviour, ITalentBorderView
 {
     private TalentController _controller;
-
     public void Init(TalentController controller)
     {
         _controller = controller;
