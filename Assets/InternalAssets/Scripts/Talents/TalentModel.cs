@@ -1,11 +1,13 @@
 
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class TalentModel
 {
     public TalentState State;
     public Dictionary<string, TalentState> talentsStates = new Dictionary<string, TalentState>();
-    
+    public Dictionary<string, TalentData> talentsDataMap = new Dictionary<string, TalentData>();
     public bool IsAnyTalentSelected()
     {
         foreach (var state in talentsStates.Values)
@@ -17,7 +19,7 @@ public class TalentModel
         }
         return false;
     }
-    
+
     public bool IsTalentUpgradedSelected(TalentData _currentlySelectedTalent)
     {
         return _currentlySelectedTalent != null &&
@@ -29,6 +31,28 @@ public class TalentModel
         if (talentsStates.TryGetValue(talentName, out TalentState state) && state == TalentState.Selected)
         {
             talentsStates[talentName] = TalentState.Upgraded;
+        }
+    }
+    public void ResetTalent(string talentName, TalentController _controller)
+    {
+        if (talentsStates.TryGetValue(talentName, out TalentState state) && state == TalentState.Selected)
+        {
+            talentsStates[talentName] = _controller.prevTalentState;
+        }
+    }
+
+    public void ResetAllTalents()
+    {
+        foreach (var talentName in talentsStates.Keys.ToList())
+        {
+            if (talentsDataMap.TryGetValue(talentName, out TalentData talentData))
+            {
+                talentsStates[talentName] = talentData.initialState;
+            }
+            else
+            {
+                Debug.LogWarning($"No TalentData found for {talentName}.");
+            }
         }
     }
 }

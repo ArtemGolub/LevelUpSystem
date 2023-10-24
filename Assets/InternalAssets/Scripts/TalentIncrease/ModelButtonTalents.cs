@@ -1,6 +1,8 @@
+using UnityEngine;
+
 public class ModelButtonTalents
 {
-    private int currentTalentPoints = 0;
+    public int currentTalentPoints = 0;
     private int maxTallentPoints = 0;
 
     public int GetTalentPoints()
@@ -8,9 +10,9 @@ public class ModelButtonTalents
         return currentTalentPoints;
     }
     
-    public void RemoveTalentPoint()
+    public void RemoveTalentPoint(int amount)
     {
-        if (!RemoveTalentEnable()) return;
+        if (!RemoveTalentEnable(amount)) return;
         currentTalentPoints--;
     }
 
@@ -19,14 +21,20 @@ public class ModelButtonTalents
         currentTalentPoints = maxTallentPoints;
     }
     
-    public bool RemoveTalentEnable()
+    public bool RemoveTalentEnable(int amount)
     {
-        if (GetTalentPoints() <= 0) return false;
+        if (GetTalentPoints() - amount < 0) return false;
         return true;
     }
     public void AddTalentPoint()
     {
         currentTalentPoints++;
         maxTallentPoints++;
+    }
+
+    public void ReciveTalentPoint(int amount)
+    {
+        if(currentTalentPoints > maxTallentPoints) return;
+        currentTalentPoints += amount;
     }
 }

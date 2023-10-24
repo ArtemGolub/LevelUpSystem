@@ -4,7 +4,7 @@ public class ControllerTalentsButton : MonoBehaviour
 {
     public static ControllerTalentsButton current;
     
-    private ModelButtonTalents _modelButton;
+    public ModelButtonTalents _modelButton;
     private ITalentButtonsView _buttonsView;
 
     private void Start()
@@ -22,16 +22,23 @@ public class ControllerTalentsButton : MonoBehaviour
        _buttonsView.UpdateText(_modelButton.GetTalentPoints());
     }
 
-    public void RemoveAllPoints()
+    public void ReciveTalentPoint(int amount)
     {
-        _modelButton.RemoveAllTalentPoints();
+        _modelButton.ReciveTalentPoint(amount);   
         _buttonsView.UpdateText(_modelButton.GetTalentPoints());
     }
 
-    public void RemoveTalentPoint()
+    public void RemoveAllPoints()
     {
-        if ((!_modelButton.RemoveTalentEnable())) return;
-        _modelButton.RemoveTalentPoint();
+        TalentController.current.ResetAllTalents();
+       // _modelButton.RemoveAllTalentPoints();
+        _buttonsView.UpdateText(_modelButton.GetTalentPoints());
+    }
+
+    public void RemoveTalentPoint(int amount)
+    {
+        if ((!_modelButton.RemoveTalentEnable(amount))) return;
+        _modelButton.RemoveTalentPoint(amount);
         _buttonsView.UpdateText(_modelButton.GetTalentPoints());
     }
 

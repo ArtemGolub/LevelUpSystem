@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a474e36d4062ff448bc19a13135d701, type: 3}
-  m_Name: New Talent 3
+  m_Name: Talent10
   m_EditorClassIdentifier: 
-  talentName: Main
-  talentDescription: this is talent Main
+  talentName: Talent 1
+  talentDescription: this is talent 1
   talentIcon: {fileID: 21300000, guid: fc476c862eab60d4da1e9e2879fcd844, type: 3}
-  initialState: 3
+  initialState: 0
   requiredLevel: 1
   cost: 1
   prerequisites: []
