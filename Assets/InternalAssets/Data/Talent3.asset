@@ -15,7 +15,8 @@ MonoBehaviour:
   talentName: Talent 3
   talentDescription: this is talent 1
   talentIcon: {fileID: 21300000, guid: 9957c1e78164e33489720ef13f14e826, type: 3}
-  initialState: 0
+  initialState: 1
   requiredLevel: 1
   cost: 1
-  prerequisites: []
+  prerequisites:
+  - {fileID: 11400000, guid: d4ebdabb06f7d7f448e91a5fe95e86a9, type: 2}
