@@ -29,7 +29,7 @@ public class TalentButtonView : MonoBehaviour, ITalentButtonView
 
     public void SetTalentImage(TalentData talent, Button button)
     {
-        button.transform.GetChild(0).GetComponent<Image>().sprite = talent.talentIcon;
+        button.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = talent.talentIcon;
     }
 
     public void SetSpriteColor(Button button, TalentState talentState)
@@ -38,22 +38,26 @@ public class TalentButtonView : MonoBehaviour, ITalentButtonView
         {
             case TalentState.Active:
             {
-                button.transform.GetChild(0).GetComponent<Image>().color = Color.gray;
+                button.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.grey;
+                button.transform.GetComponent<Image>().color = Color.white;
                 break;
             }
             case TalentState.Inactive:
             {
-                button.transform.GetChild(0).GetComponent<Image>().color = Color.black;
+                button.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.black;
+                button.transform.GetComponent<Image>().color = Color.white;
                 break;
             }
             case TalentState.Selected:
             {
-                button.transform.GetChild(0).GetComponent<Image>().color = Color.green;
+                button.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.white;
+                button.transform.GetComponent<Image>().color = Color.green;
                 break;
             }
             case TalentState.Upgraded:
             {
-                button.transform.GetChild(0).GetComponent<Image>().color = Color.white;
+                button.transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.white;
+                button.transform.GetComponent<Image>().color = Color.white;
                 break;
             }
         }

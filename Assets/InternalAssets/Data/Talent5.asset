@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   talentName: Talent 5
   talentDescription: this is talent 1
-  talentIcon: {fileID: 21300000, guid: fc476c862eab60d4da1e9e2879fcd844, type: 3}
+  talentIcon: {fileID: 21300000, guid: 1763d44f5f0ea3546bef6589516fd62c, type: 3}
   initialState: 0
   requiredLevel: 1
   cost: 1
