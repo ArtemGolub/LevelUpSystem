@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a474e36d4062ff448bc19a13135d701, type: 3}
   m_Name: Talent 2
   m_EditorClassIdentifier: 
-  talentName: Talent 3
+  talentName: Talent 2
   talentDescription: this is talent 3
   talentIcon: {fileID: 21300000, guid: fc476c862eab60d4da1e9e2879fcd844, type: 3}
   initialState: 1
   requiredLevel: 1
   cost: 1
   prerequisites:
-  - {fileID: 11400000, guid: 461a14fe600845e49908bc5f28c2011a, type: 2}
   - {fileID: 11400000, guid: 56cd56e66309b4e4e8add1de7b848a4d, type: 2}

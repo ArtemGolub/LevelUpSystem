@@ -2,18 +2,14 @@ using UnityEngine;
 
 public class ControllerTalentsButton : MonoBehaviour
 {
-    public static ControllerTalentsButton current;
-    
-    public ModelButtonTalents _modelButton;
+    private ModelButtonTalents _modelButton;
     private ITalentButtonsView _buttonsView;
 
     private void Start()
     {
-        current = this;
-        
         _modelButton = new ModelButtonTalents();
         _buttonsView = GetComponent<ITalentButtonsView>();
-        _buttonsView.Init(this);
+        //_buttonsView.Init(this);
     }
     
     public void AddTalentPoint()
@@ -30,8 +26,7 @@ public class ControllerTalentsButton : MonoBehaviour
 
     public void RemoveAllPoints()
     {
-        TalentController.current.ResetAllTalents();
-       // _modelButton.RemoveAllTalentPoints();
+       // TalentController.current.ResetAllTalents();
         _buttonsView.UpdateText(_modelButton.GetTalentPoints());
     }
 
@@ -40,15 +35,5 @@ public class ControllerTalentsButton : MonoBehaviour
         if ((!_modelButton.RemoveTalentEnable(amount))) return;
         _modelButton.RemoveTalentPoint(amount);
         _buttonsView.UpdateText(_modelButton.GetTalentPoints());
-    }
-
-    public void HideUI()
-    {
-        _buttonsView.HideUI();
-    }
-
-    public void ShowUI()
-    {
-        _buttonsView.ShowUi();
     }
 }

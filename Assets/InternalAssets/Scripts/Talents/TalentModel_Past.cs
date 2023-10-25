@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TalentModel
+public class TalentModel_Past
 {
-    public TalentState State;
     public Dictionary<string, TalentState> talentsStates = new Dictionary<string, TalentState>();
     public Dictionary<string, TalentData> talentsDataMap = new Dictionary<string, TalentData>();
+    
     public bool IsAnyTalentSelected()
     {
         foreach (var state in talentsStates.Values)
@@ -22,8 +22,7 @@ public class TalentModel
 
     public bool IsTalentUpgradedSelected(TalentData _currentlySelectedTalent)
     {
-        return _currentlySelectedTalent != null &&
-               talentsStates[_currentlySelectedTalent.talentName] == TalentState.Upgraded;
+        return _currentlySelectedTalent != null && talentsStates[_currentlySelectedTalent.talentName] == TalentState.Upgraded;
     }
     
     public void UpgradeTalent(string talentName)
@@ -33,11 +32,11 @@ public class TalentModel
             talentsStates[talentName] = TalentState.Upgraded;
         }
     }
-    public void ResetTalent(string talentName, TalentController _controller)
+    public void ResetTalent(string talentName, TalentController_Past controllerPast)
     {
         if (talentsStates.TryGetValue(talentName, out TalentState state) && state == TalentState.Selected)
         {
-            talentsStates[talentName] = _controller.prevTalentState;
+            talentsStates[talentName] = controllerPast.prevTalentState;
         }
     }
 

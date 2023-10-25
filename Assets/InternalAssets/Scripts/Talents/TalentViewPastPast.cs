@@ -1,17 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TalentView : MonoBehaviour, ITalentView
+public class TalentViewPastPast : MonoBehaviour, ITalentView_Past
 {
-    private TalentController _controller;
+    private TalentController_Past _controllerPast;
     public Button ConfirmButton;
     public Button CancelButton;
     
-    public void Init(TalentController controller)
+    public void Init(TalentController_Past controllerPast)
     {
-        _controller = controller;
-        ConfirmButton.onClick.AddListener(_controller.HandleUpgradeButtonPress);
-        CancelButton.onClick.AddListener(_controller.HandleCancelButtonPress);
+        _controllerPast = controllerPast;
+        ConfirmButton.onClick.AddListener(_controllerPast.HandleUpgradeButtonPress);
+        CancelButton.onClick.AddListener(_controllerPast.HandleCancelButtonPress);
     }
 
     public void RegisterTalents(TalentsPair[] talentsPairs)
@@ -19,7 +19,7 @@ public class TalentView : MonoBehaviour, ITalentView
         foreach (var pair in talentsPairs)
         {
             if (pair.button == null) return;
-            pair.button.onClick.AddListener(() => _controller.HandleButtonPress(pair.talent, pair.button));
+            pair.button.onClick.AddListener(() => _controllerPast.HandleButtonPress(pair.talent, pair.button));
         }
     }
 
@@ -39,10 +39,5 @@ public class TalentView : MonoBehaviour, ITalentView
     {
         ConfirmButton.transform.gameObject.SetActive(false);
         CancelButton.transform.gameObject.SetActive(false);
-    }
-
-    public void ShowTalentName(string talentName)
-    {
-        Debug.Log(talentName);
     }
 }

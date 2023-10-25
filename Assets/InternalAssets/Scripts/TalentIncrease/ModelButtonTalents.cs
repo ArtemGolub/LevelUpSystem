@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ModelButtonTalents
 {
     public int currentTalentPoints = 0;
