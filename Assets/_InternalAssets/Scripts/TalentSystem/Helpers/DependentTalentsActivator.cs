@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class TalentHelper
+public class DependentTalentsActivator
 {
   public static void ActivateDependentTalents(Dictionary<string, TalentState> talentsStates)
     {

@@ -48,7 +48,7 @@ public class TalentStateModel
 
     private void ActivateDependentTalent()
     {
-        TalentHelper.ActivateDependentTalents(talentsStates);
+        DependentTalentsActivator.ActivateDependentTalents(talentsStates);
     }
 
     private void ChangeTalentState(string talentName, TalentState state)
