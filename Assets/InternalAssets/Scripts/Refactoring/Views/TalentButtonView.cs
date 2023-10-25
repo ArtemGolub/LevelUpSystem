@@ -9,14 +9,17 @@ public class TalentButtonView : MonoBehaviour, ITalentButtonView
 
     public void TalentPrice(TalentData talent)
     {
+        talentPrice.transform.parent.gameObject.SetActive(true);
         talentPrice.transform.gameObject.SetActive(true);
-        talentPrice.text = talent.cost.ToString();
+        talentPrice.text = "Price: " + talent.cost.ToString();
     }
 
     public void HideTalentPrice()
     {
+        talentPrice.transform.parent.gameObject.SetActive(false);
         talentPrice.gameObject.SetActive(false);
     }
+
     public void ChangeBorder(Button button, TalentState state)
     {
         button.image.sprite = TalentsData.current.BorderData.GetSpriteForState(state);

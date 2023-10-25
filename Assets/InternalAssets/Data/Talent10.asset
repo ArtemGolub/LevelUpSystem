@@ -17,7 +17,7 @@ MonoBehaviour:
   talentIcon: {fileID: 21300000, guid: 4b809565fb6175b46b899350a410642d, type: 3}
   initialState: 1
   requiredLevel: 1
-  cost: 1
+  cost: 5
   prerequisites:
   - {fileID: 11400000, guid: 8cab94e69355f254eac1c1d4caa886a4, type: 2}
   - {fileID: 11400000, guid: be9af1cf5df68384a806f0a2774df376, type: 2}
