@@ -26,6 +26,7 @@ public class TalentHelper
                     {
                         TalentEvents.current.ChangeTileState.Invoke(talent.talentName, TalentState.Inactive);
                         TalentEvents.current.ChangeButtonBorder.Invoke(pair.button, TalentState.Inactive);
+                        TalentEvents.current.SetSpriteColor.Invoke(pair.button, TalentState.Inactive);
                         TalentEvents.current.ResetCurTalent.Invoke();
                     }
                 }
@@ -36,6 +37,7 @@ public class TalentHelper
                     {
                         TalentEvents.current.ChangeTileState.Invoke(talent.talentName, TalentState.Active);
                         TalentEvents.current.ChangeButtonBorder.Invoke(pair.button, TalentState.Active);
+                        TalentEvents.current.SetSpriteColor.Invoke(pair.button, TalentState.Active);
                         TalentEvents.current.ResetCurTalent.Invoke();
                     }
                 }
@@ -43,6 +45,7 @@ public class TalentHelper
                 {
                     TalentEvents.current.ChangeTileState.Invoke(talent.talentName, TalentState.Inactive);
                     TalentEvents.current.ChangeButtonBorder.Invoke(pair.button, TalentState.Inactive);
+                    TalentEvents.current.SetSpriteColor.Invoke(pair.button, TalentState.Inactive);
                     TalentEvents.current.ResetCurTalent.Invoke();
                 }
             }

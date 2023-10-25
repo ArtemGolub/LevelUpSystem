@@ -69,7 +69,13 @@ public class TalentValidator : MonoBehaviour
                 Debug.LogError("Has Upgraded Dependents");
                 return false;
             }
+            if (EnoughPoints(talent))
+            {
+                Debug.LogError("Not Enough Points");
+                return false;
+            }
         }
+        
         if (IsAnyTalentSelected(talentsStates, talent, button))
         {
             Debug.LogError("Trying to get: " + talent.talentName);
@@ -81,11 +87,7 @@ public class TalentValidator : MonoBehaviour
             return false;
         }
 
-        if (EnoughPoints(talent))
-        {
-            Debug.LogError("Not Enough Points");
-            return false;
-        }
+
         curTalent = talent;
         curButton = button;
         curData = data;

@@ -21,7 +21,7 @@ public class TalentUpgradeModel
             {
                 talentsData[talentPair.talent.talentName] = talentPair.talent;
                 TalentEvents.current.OnGameStart(talentPair.talent.talentName, talentPair.talent.initialState,
-                    talentPair.button);
+                    talentPair.button, talentPair.talent);
             }
         }
         

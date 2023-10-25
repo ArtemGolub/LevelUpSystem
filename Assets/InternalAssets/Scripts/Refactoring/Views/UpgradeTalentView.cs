@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,6 +38,7 @@ public class UpgradeTalentView : MonoBehaviour, IUpgradeTalentView
     {
         cancelButton.gameObject.SetActive(true);
     }
+    
 
     public void HideUI()
     { 

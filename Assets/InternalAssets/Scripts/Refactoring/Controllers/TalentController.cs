@@ -31,7 +31,7 @@ public class TalentController : MonoBehaviour
             case TalentState.Active:
             {
                 _talentStateModel.SetPrevTalentState(currentState);
-                TalentEvents.current.OnTalentSelect(talent.name, TalentState.Selected, button, _talentStateModel.GetPrevTalentState());
+                TalentEvents.current.OnTalentSelect(talent.name, TalentState.Selected, button, _talentStateModel.GetPrevTalentState(), talent);
                 break;
             }
             case TalentState.Inactive:
@@ -41,14 +41,15 @@ public class TalentController : MonoBehaviour
             }
             case TalentState.Selected:
             {
-                TalentEvents.current.OnTalentSelect(talent.name, _talentStateModel.GetPrevTalentState(), button, _talentStateModel.GetPrevTalentState());
+                TalentEvents.current.OnTalentSelect(talent.name, _talentStateModel.GetPrevTalentState(), button, _talentStateModel.GetPrevTalentState(), talent);
                 TalentEvents.current.HideConfrimUI.Invoke();
+                TalentEvents.current.HideTalentPrice.Invoke();
                 break;
             }
             case TalentState.Upgraded:
             {
                 _talentStateModel.SetPrevTalentState(currentState);
-                TalentEvents.current.OnTalentSelect(talent.name, TalentState.Selected, button, _talentStateModel.GetPrevTalentState());
+                TalentEvents.current.OnTalentSelect(talent.name, TalentState.Selected, button, _talentStateModel.GetPrevTalentState(), talent);
                 break;
             }
         }

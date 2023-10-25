@@ -11,7 +11,7 @@ public class TalentModel
             if (talentsData.ContainsKey(talentPair.talent.talentName))
             {
                 talentsData[talentPair.talent.talentName] = talentPair.talent;
-                TalentEvents.current.OnGameStart(talentPair.talent.talentName, talentPair.talent.initialState, talentPair.button);
+                TalentEvents.current.OnGameStart(talentPair.talent.talentName, talentPair.talent.initialState, talentPair.button, talentPair.talent);
             }
         }
     }
