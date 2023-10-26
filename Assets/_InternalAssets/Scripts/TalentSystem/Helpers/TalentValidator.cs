@@ -101,18 +101,18 @@ public class TalentValidator : MonoBehaviour
         {
             if (state == TalentState.Inactive)
             {
-                Debug.Log("Current talent is Inactive");
+               // Debug.Log("Current talent is Inactive");
                 curTalent = null;
                 curButton = null;
             }
             else
             {
-                Debug.Log("Current talent is not Inactive");
+                //Debug.Log("Current talent is not Inactive");
             }
         }
         else
         {
-            Debug.LogError("Current talent is not found in the talentsStates dictionary");
+            //Debug.LogError("Current talent is not found in the talentsStates dictionary");
         }
     }
     
