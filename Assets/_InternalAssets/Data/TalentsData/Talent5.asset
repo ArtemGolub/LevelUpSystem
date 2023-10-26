@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a474e36d4062ff448bc19a13135d701, type: 3}
+  m_Name: Talent5
+  m_EditorClassIdentifier: 
+  talentName: Talent 5
+  talentDescription: this is talent 1
+  talentIcon: {fileID: 21300000, guid: 1763d44f5f0ea3546bef6589516fd62c, type: 3}
+  initialState: 1
+  requiredLevel: 1
+  cost: 3
+  prerequisites:
+  - {fileID: 11400000, guid: 6be10648014a0d84d9cc4162fb316b1e, type: 2}
