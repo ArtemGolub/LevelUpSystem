@@ -9,7 +9,7 @@ public class TalentPointController : MonoBehaviour
     {
         return _talentPointModel.GetTalentPoints();
     }
-    private void Awake()
+    private void Start()
     {
         _talentPointModel = new TalentPointModel();
         _talentPointView = GetComponent<TalentPointView>();
@@ -18,10 +18,7 @@ public class TalentPointController : MonoBehaviour
         TalentEvents.current.ReciveTalentPoint.AddListener(ReciveTalentPoints);
         TalentEvents.current.AllPointsReset.AddListener(RemoveAllTalentPoints);
         TalentEvents.current.SpendTalentPoints.AddListener(RemoveTalentPoints);
-    }
-
-    private void Start()
-    {
+        
         _talentPointView.UpdateTalentPointText(_talentPointModel.GetTalentPoints());
     }
 
